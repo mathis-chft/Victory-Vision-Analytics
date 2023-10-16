@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 from script_pronoFINAL import combined_win_rate_method
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api/calculate_win_rate', methods=['POST'])
 def calculate_win_rate():

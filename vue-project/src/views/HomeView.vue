@@ -31,7 +31,8 @@
           <option value="Wales">Wales</option>
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
-        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
+        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR X MATCHS</p>
+        <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
       </div>
   
   
@@ -60,7 +61,8 @@
           <option value="Wales">Wales</option>
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
-        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
+        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR X MATCHS</p>
+        <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
       </div>
     </div>
   

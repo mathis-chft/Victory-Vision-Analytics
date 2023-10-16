@@ -31,14 +31,14 @@
           <option value="Wales">Wales</option>
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
-        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR X MATCHS</p>
+        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team1.matchesCount }} MATCHS</p>
         <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
       </div>
   
   
       <div class="flex justify-center items-center">
-        <button id=whowilwin_btn class="bg-[#ECD71A] text-[#3B3D33] hover:bg-[#3B3D33] hover:text-[#ECD71A] font-black text-center px-6 py-3 mb-10 rounded-2xl flex flex-col items-center aspect-w-1 aspect-h-1">
-          <svg @click="calculateWinRate" class="mb-1.5" width="45" height="45" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button @click="calculateWinRate" id=whowilwin_btn class="bg-[#ECD71A] text-[#3B3D33] hover:bg-[#3B3D33] hover:text-[#ECD71A] font-black text-center px-6 py-3 mb-10 rounded-2xl flex flex-col items-center aspect-w-1 aspect-h-1">
+          <svg class="mb-1.5" width="45" height="45" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8.14258 13.211C8.14258 26.3477 14.4406 34.5542 27.0047 38.4028C28.9768 40.8204 31.2034 42.7606 33.3664 44.1283V57.9649H28.3725C23.8876 57.9649 21.5656 60.5413 21.5656 64.7718V70.0202C21.5656 71.4514 22.6789 72.4375 24.0148 72.4375H54.4868C55.8228 72.4375 56.9362 71.4514 56.9362 70.0202V64.7718C56.9362 60.5413 54.5824 57.9649 50.0973 57.9649H45.1353V44.1283C47.2983 42.7606 49.5248 40.8204 51.465 38.4028C64.0612 34.5542 70.3592 26.3477 70.3592 13.211C70.3592 9.93473 68.3234 7.93083 64.92 7.93083H58.7491C58.2401 4.68639 55.9501 2.71429 52.1012 2.71429H26.4004C22.5834 2.71429 20.2614 4.65459 19.7525 7.93083H13.5818C10.1783 7.93083 8.14258 9.93473 8.14258 13.211ZM12.6911 13.6563C12.6911 13.1473 13.0728 12.7338 13.6135 12.7338H19.5935V18.9682C19.5935 23.8348 20.8658 28.3516 22.8379 32.2639C16.19 28.8923 12.6911 22.7215 12.6911 13.6563ZM55.632 32.2639C57.6359 28.3516 58.9081 23.8348 58.9081 18.9682V12.7338H64.888C65.4289 12.7338 65.8106 13.1473 65.8106 13.6563C65.8106 22.7215 62.3116 28.8923 55.632 32.2639Z" fill="#3B3D33"/>
           </svg>
           WHO WILWIN ?
@@ -61,7 +61,7 @@
           <option value="Wales">Wales</option>
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
-        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR X MATCHS</p>
+        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team2.matchesCount }} MATCHS</p>
         <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
       </div>
     </div>
@@ -174,11 +174,13 @@
       return {
           team1: {
             name: '',
-            score: 0
+            score: 0,
+            matchesCount: 0
           },
           team2: {
             name: '',
-            score: 0
+            score: 0,
+            matchesCount: 0
           },
           isOn: true,
           apiError: false,
@@ -206,42 +208,41 @@
           this.isOn = !this.isOn;
       },
       async calculateWinRate() {
-          try {
-              // Réinitialisez apiError à false chaque fois que vous faites une nouvelle requête
-              this.apiError = false;
+  try {
+    // Make the API request with the new parameters
+    const response = await axios.post('http://127.0.0.1:5000/api/calculate_win_rate', {
+      home_team: this.team1.name,
+      away_team: this.team2.name,
+      weather_filter: this.weatherFilter,
+      temperature_filter: this.temperatureFilter,
+      wind_filter: this.windFilter,
+      pressure_filter: this.pressureFilter,
+      df_path: this.dfPath
+    });
 
-              // Make the API request with the new parameters
-              const response = await axios.post('http://127.0.0.1:5000/api/calculate_win_rate', {
-                  home_team: this.team1.name,
-                  away_team: this.team2.name,
-                  weather_filter: this.weatherFilter,
-                  temperature_filter: this.temperatureFilter,
-                  wind_filter: this.windFilter,
-                  pressure_filter: this.pressureFilter,
-                  df_path: this.dfPath
-              });
+    // Log the API response to the console
+    console.log('API Response:', response.data);
 
+    // Store the API response
+    this.apiResponse = response.data;
 
-  
-              // Log the API response to the console
-              console.log('API Response:', response.data);
-  
-              // Store the API response
-              this.apiResponse = response.data;
-  
-              // Update the teams' scores with the data from the API response
-              if (response.data.status === 'Success') {
-                  const teams = response.data.teams;
-                  this.team1.score = teams[this.team1.name].wilwin_score;
-                  this.team2.score = teams[this.team2.name].wilwin_score;
-              }
-          } catch (error) {
-              console.error('Error during the API request:', error);
-              this.apiResponse = 'Error retrieving data';
-              this.team1.score = 'No data';
-              this.team2.score = 'No data';
-          }
-      }
+    // Update the teams' scores with the data from the API response
+    if (response.data.status === 'Success') {
+      const teams = response.data.teams;
+      this.team1.score = teams[this.team1.name].wilwin_score;
+      this.team2.score = teams[this.team2.name].wilwin_score;
+
+      // Update the "BASÉ SUR X MATCHS" text for each team
+      this.team1.matchesCount = teams[this.team1.name].method2.matches_count;
+      this.team2.matchesCount = teams[this.team2.name].method2.matches_count;
+    }
+  } catch (error) {
+    console.error('Error during the API request:', error);
+    this.apiResponse = 'Error retrieving data';
+    this.team1.score = 'No data';
+    this.team2.score = 'No data';
+  }
+}
   }
     
   }

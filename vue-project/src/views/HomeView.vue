@@ -179,6 +179,7 @@
             score: 0
           },
           isOn: true,
+          apiError: false,
           apiResponse: null,  // to store the API response
           // Adding new data properties for the additional parameters
           _weatherFilter: false,
@@ -204,6 +205,9 @@
       },
       async calculateWinRate() {
           try {
+              // Réinitialisez apiError à false chaque fois que vous faites une nouvelle requête
+              this.apiError = false;
+
               // Make the API request with the new parameters
               const response = await axios.post('http://127.0.0.1:5000/api/calculate_win_rate', {
                   home_team: this.team1.name,
@@ -214,6 +218,8 @@
                   pressure_filter: this.pressureFilter,
                   df_path: this.dfPath
               });
+
+
   
               // Log the API response to the console
               console.log('API Response:', response.data);
@@ -230,6 +236,8 @@
           } catch (error) {
               console.error('Error during the API request:', error);
               this.apiResponse = 'Error retrieving data';
+              this.team1.score = 'No data';
+              this.team2.score = 'No data';
           }
       }
   }

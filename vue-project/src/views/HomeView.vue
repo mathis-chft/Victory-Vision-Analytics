@@ -22,6 +22,13 @@
         <option value="France">France</option>
         <option value="Ireland">Ireland</option>
         <option value="New Zealand">New Zealand</option>
+        <option value="France">France</option>
+        <option value="Ireland">Ireland</option>
+        <option value="New Zealand">New Zealand</option>
+        <option value="France">France</option>
+        <option value="Ireland">Ireland</option>
+        <option value="New Zealand">New Zealand</option>
+        <option value="France">France</option>
       </select>
       <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
     </div>
@@ -43,6 +50,13 @@
         <option value="France">France</option>
         <option value="Ireland">Ireland</option>
         <option value="New Zealand">New Zealand</option>
+        <option value="France">France</option>
+        <option value="Ireland">Ireland</option>
+        <option value="New Zealand">New Zealand</option>
+        <option value="France">France</option>
+        <option value="Ireland">Ireland</option>
+        <option value="New Zealand">New Zealand</option>
+        <option value="France">France</option>
       </select>
       <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
     </div>

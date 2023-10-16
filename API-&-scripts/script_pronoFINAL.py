@@ -214,7 +214,7 @@ if __name__ == "__main__":
     temperature_filter = input("Filtre de température (Hot/Medium/Cold/None): ")
     wind_filter = input("Filtre de vent (Strong/Medium/Light/None): ")
     pressure_filter = input("Filtre de pression (High/Medium/Low/None): ")
-    df_path = "/Users/ihsane/Desktop/Victory Vision Analytics/Vision-Victory-Analytics/API & scripts/merged_weather_rugby_final.csv"
+    df_path = "API-&-scripts/merged_weather_rugby_final.csv"
     result = combined_win_rate_method(home_team, away_team, df_path, weather_filter, temperature_filter, wind_filter, pressure_filter)    
     print(result)
 

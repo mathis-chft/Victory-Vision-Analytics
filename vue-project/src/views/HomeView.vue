@@ -6,7 +6,7 @@
         <span v-else>
           <img src="../assets/brain.fill.svg" alt="Brain Icon" class="h-6 w-6" />
         </span>
-        <span :class="{ 'text-yellow-400': !isOn }"></span>
+        <span :class="{ 'text-[#ECD71A]': !isOn }"></span>
       </button>
         <div class="flex justify-center items-center">
         <img src="@/assets/WILWIN.svg" alt="WILWIN Logo" class=" mb-44 mt-10 h-11" />
@@ -31,6 +31,7 @@
           <option value="Wales">Wales</option>
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
+        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
       </div>
   
   
@@ -59,6 +60,7 @@
           <option value="Wales">Wales</option>
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
+        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
       </div>
     </div>
   
@@ -67,7 +69,7 @@
       <div class="text-center mx-16">
         <div class="flex flex-col items-center">
           <label for="input1">Intempéries</label>
-          <input type="checkbox" v-model="weatherFilter" class="cursor-pointer h-10 w-10 bg-[#ECD71A]/[.12] mt-4 rounded-md checked:bg-yellow-400" id="input1"/>
+          <input type="checkbox" v-model="weatherFilter" class="cursor-pointer h-10 w-10 bg-[#ECD71A]/[.12] mt-4 rounded-md checked:bg-[#ECD71A]" id="input1"/>
         </div>
       </div>
       <div class="text-center mx-16">

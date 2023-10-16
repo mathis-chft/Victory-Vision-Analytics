@@ -11,13 +11,22 @@
       <div class="flex justify-center items-center">
       <img src="@/assets/WILWIN.svg" alt="WILWIN Logo" class=" mb-44 mt-10 h-11" />
     </div>
+    
+
   <div class="flex justify-center items-center font-semibold">
-    <div class="mr-32 mb-32 text-center text-4xl">
-      <button class="mb-10 px-4 py-1 uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12] flex justify-center items-center">{{ team1.name }}
-        <img src="../assets/chevron.down.svg" alt="Chevron Down Icon" class="ml-3 w-7 h-7" />
-      </button>
+
+    
+    <div class="mr-32 mb-32 text-center">
+      <select class="mb-10 text-2xl uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12]" v-model="team1.name">
+        <option value="" disabled selected>Select a team</option>
+        <option value="France">France</option>
+        <option value="Ireland">Ireland</option>
+        <option value="New Zealand">New Zealand</option>
+      </select>
       <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
     </div>
+
+
     <div class="flex justify-center items-center">
       <button class="bg-[#ECD71A] text-[#3B3D33] hover:bg-[#3B3D33] hover:text-[#ECD71A] font-black text-center px-6 py-3 mb-10 rounded-2xl flex flex-col items-center aspect-w-1 aspect-h-1">
         <svg class="mb-1.5" width="45" height="45" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,13 +35,20 @@
         WHO WILWIN ?
       </button>
     </div>
-    <div class="ml-32 mb-32 text-center text-4xl">
-      <button class="mb-10 px-4 py-1 uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12] flex justify-center items-center">{{ team2.name }}
-        <img src="../assets/chevron.down.svg" alt="Chevron Down Icon" class="ml-3 w-7 h-7" />
-      </button>
+
+
+    <div class="ml-32 mb-32 text-center">
+      <select class="mb-10 text-2xl uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12]" v-model="team2.name">
+        <option value="" disabled selected>Select a team</option>
+        <option value="France">France</option>
+        <option value="Ireland">Ireland</option>
+        <option value="New Zealand">New Zealand</option>
+      </select>
       <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
     </div>
   </div>
+
+  
   <div class="flex justify-center text-[#EEEEEE] text-lg font-bold mt-20">
     <div class="text-center mx-16">
       <div class="flex flex-col items-center">
@@ -136,20 +152,20 @@ export default {
   data() {
     return {
       team1: {
-        name: 'Team 1',
-        score: '32%'
+        name: '',
+        score: 0
       },
       team2: {
-        name: 'Team 2',
-        score: '68%'
-      },
-      isOn: true
+        name: '',
+        score: 0
+      }
     }
   },
   methods: {
     toggleOnOff() {
       this.isOn = !this.isOn
     }
-  }
+  },
+  
 }
 </script>

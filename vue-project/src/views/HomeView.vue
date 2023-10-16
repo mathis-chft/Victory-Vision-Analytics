@@ -19,16 +19,16 @@
     <div class="mr-32 mb-32 text-center">
       <select class="mb-10 text-2xl uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12]" v-model="team1.name">
         <option value="" disabled selected>Select a team</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Australia">Australia</option>
+        <option value="England">England</option>
         <option value="France">France</option>
         <option value="Ireland">Ireland</option>
+        <option value="Italy">Italy</option>
         <option value="New Zealand">New Zealand</option>
-        <option value="France">France</option>
-        <option value="Ireland">Ireland</option>
-        <option value="New Zealand">New Zealand</option>
-        <option value="France">France</option>
-        <option value="Ireland">Ireland</option>
-        <option value="New Zealand">New Zealand</option>
-        <option value="France">France</option>
+        <option value="Scotland">Scotland</option>
+        <option value="South Africa">South Africa</option>
+        <option value="Wales">Wales</option>
       </select>
       <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
     </div>
@@ -47,16 +47,16 @@
     <div class="ml-32 mb-32 text-center">
       <select class="mb-10 text-2xl uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12]" v-model="team2.name">
         <option value="" disabled selected>Select a team</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Australia">Australia</option>
+        <option value="England">England</option>
         <option value="France">France</option>
         <option value="Ireland">Ireland</option>
+        <option value="Italy">Italy</option>
         <option value="New Zealand">New Zealand</option>
-        <option value="France">France</option>
-        <option value="Ireland">Ireland</option>
-        <option value="New Zealand">New Zealand</option>
-        <option value="France">France</option>
-        <option value="Ireland">Ireland</option>
-        <option value="New Zealand">New Zealand</option>
-        <option value="France">France</option>
+        <option value="Scotland">Scotland</option>
+        <option value="South Africa">South Africa</option>
+        <option value="Wales">Wales</option>
       </select>
       <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
     </div>
@@ -67,7 +67,7 @@
     <div class="text-center mx-16">
       <div class="flex flex-col items-center">
         <label for="input1">Intempéries</label>
-        <input type="checkbox" v-model="weatherFilter" class="cursor-pointer h-8 w-8 bg-[#ECD71A]/[.12] mt-4 rounded-md checked:bg-yellow-400" id="input1"/>
+        <input type="checkbox" v-model="weatherFilter" class="cursor-pointer h-10 w-10 bg-[#ECD71A]/[.12] mt-4 rounded-md checked:bg-yellow-400" id="input1"/>
       </div>
     </div>
     <div class="text-center mx-16">
@@ -76,9 +76,9 @@
         <select v-model="temperatureFilter" class="w-48 h-10 bg-[#ECD71A]/[.12] rounded-full p-1 mt-4 text-center" id="input2">
           <option value="0" selected>Désactivé</option>
           <optgroup label="Options">
-          <option value="1">Froid</option>
-          <option value="2">Tempéré</option>
-          <option value="3">Chaud</option>
+          <option value="Cold">Froid</option>
+          <option value="Medium">Tempéré</option>
+          <option value="Hot">Chaud</option>
           </optgroup>
         </select>
       </div>
@@ -89,9 +89,9 @@
         <select v-model="windFilter" class="w-48 h-10 bg-[#ECD71A]/[.12] rounded-full p-1 mt-4 text-center" id="input3">
           <option value="0" selected>Désactivé</option>
           <optgroup label="Options">
-          <option value="1">Vent faible</option>
-          <option value="2">Vent modéré</option>
-          <option value="3">Vent fort</option>
+          <option value="Light">Vent faible</option>
+          <option value="Medium">Vent modéré</option>
+          <option value="Strong">Vent fort</option>
           </optgroup>
         </select>
       </div>
@@ -102,9 +102,9 @@
         <select v-model="pressureFilter" class="w-48 h-10 bg-[#ECD71A]/[.12] rounded-full p-1 mt-4 text-center" id="input4">
           <option value="0" selected>Désactivé</option>
           <optgroup label="Options">
-            <option value="1">Basse pression</option>
-            <option value="2">Pression moyenne</option>
-            <option value="3">Haute pression</option>
+            <option value="Low">Basse pression</option>
+            <option value="Medium">Pression moyenne</option>
+            <option value="High">Haute pression</option>
           </optgroup>
         </select>
       </div>
@@ -176,43 +176,61 @@ export default {
           name: '',
           score: 0
         },
+        isOn: true,
         apiResponse: null,  // to store the API response
         // Adding new data properties for the additional parameters
-        weatherFilter: false,
-        temperatureFilter: null,
-        windFilter: null,
-        pressureFilter: null,
+        _weatherFilter: false,
+        temperatureFilter: 0,
+        windFilter: 0,
+        pressureFilter: 0,
         dfPath: '/Users/ihsane/Desktop/Victory Vision Analytics/merged_weather_rugby_final.csv'  // Adjust the path as needed
       };
   },
-  methods: {
-      toggleOnOff() {
-        this.isOn = !this.isOn;
+  computed: {
+    weatherFilter: {
+      get() {
+        return this._weatherFilter ? 'True' : 'False';
       },
-      async calculateWinRate() {
-        try {
-          // Make the API request with the new parameters
-          const response = await axios.post('http://127.0.0.1:5000/api/calculate_win_rate', {
-            home_team: this.team1.name,
-            away_team: this.team2.name,
-            weather_filter: this.weatherFilter,
-            temperature_filter: this.temperatureFilter,
-            wind_filter: this.windFilter,
-            pressure_filter: this.pressureFilter,
-            df_path: this.dfPath
-          });
-
-          // Log the API response to the console
-          console.log('API Response:', response.data);
-  
-          // Store the API response
-          this.apiResponse = response.data;
-        } catch (error) {
-          console.error('Error during the API request:', error);
-          this.apiResponse = 'Error retrieving data';
-        }
+      set(value) {
+        this._weatherFilter = value === 'True' || value === true;
       }
     }
+  },
+  methods: {
+    toggleOnOff() {
+        this.isOn = !this.isOn;
+    },
+    async calculateWinRate() {
+        try {
+            // Make the API request with the new parameters
+            const response = await axios.post('http://127.0.0.1:5000/api/calculate_win_rate', {
+                home_team: this.team1.name,
+                away_team: this.team2.name,
+                weather_filter: this.weatherFilter,
+                temperature_filter: this.temperatureFilter,
+                wind_filter: this.windFilter,
+                pressure_filter: this.pressureFilter,
+                df_path: this.dfPath
+            });
+
+            // Log the API response to the console
+            console.log('API Response:', response.data);
+
+            // Store the API response
+            this.apiResponse = response.data;
+
+            // Update the teams' scores with the data from the API response
+            if (response.data.status === 'Success') {
+                const teams = response.data.teams;
+                this.team1.score = teams[this.team1.name].wilwin_score;
+                this.team2.score = teams[this.team2.name].wilwin_score;
+            }
+        } catch (error) {
+            console.error('Error during the API request:', error);
+            this.apiResponse = 'Error retrieving data';
+        }
+    }
+}
   
 }
 </script>

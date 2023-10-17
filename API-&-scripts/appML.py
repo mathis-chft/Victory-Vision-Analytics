@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Load and prepare the data, and train the model
-df = pd.read_csv('/Users/ihsane/Desktop/Victory Vision Analytics/Vision-Victory-Analytics/API-&-scripts/merged_weather_rugby_final.csv', delimiter=';')
+df = pd.read_csv('API-&-scripts/merged_weather_rugby_final.csv', delimiter=';')
 
 # Prepare data and train model
 def prepare_and_train_model(df):

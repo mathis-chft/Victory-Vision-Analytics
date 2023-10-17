@@ -32,7 +32,7 @@
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
         <p v-if="team2.matchesCount > 0" class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team1.matchesCount }} MATCHS</p>
-        <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
+        <!-- <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p> -->
       </div>
   
   
@@ -62,7 +62,7 @@
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
         <p v-if="team2.matchesCount > 0" class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team2.matchesCount }} MATCHS</p>
-        <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
+        <!-- <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p> -->
       </div>
     </div>
   

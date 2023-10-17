@@ -1,14 +1,14 @@
 <template>
-  <button class="absolute top-0 right-0 mt-10 mr-10 p-3 rounded-full font-bold text-white bg-[#ECD71A]/[.12]" @click="toggleOnOff">
+  <button id=ml_btn class="absolute top-0 right-0 mt-10 mr-10 p-3 rounded-full font-bold text-white bg-[#ECD71A]/[.12]" @click="toggleOnOff">
     <span v-if="isOn">
-          <img src="../assets/brain.svg" alt="Brain Icon" class="h-6 w-6" />
-        </span>
-        <span v-else>
-          <img src="../assets/brain.fill.svg" alt="Brain Icon" class="h-6 w-6" />
-        </span>
-        <span :class="{ 'text-[#ECD71A]': !isOn }"></span>
-      </button>
-        <div class="flex justify-center items-center">
+        <img src="../assets/brain.fill.svg" alt="Brain Icon" class="h-6 w-6" />
+    </span>
+    <span v-else>
+        <img src="../assets/brain.svg" alt="Brain Icon" class="h-6 w-6" />
+    </span>
+    <span :class="{ 'text-[#ECD71A]': !isOn }"></span>
+  </button>
+      <div class="flex justify-center items-center">
         <img src="@/assets/WILWIN.svg" alt="WILWIN Logo" class=" mb-44 mt-10 h-11" />
       </div>
       
@@ -31,7 +31,7 @@
           <option value="Wales">Wales</option>
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
-        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team1.matchesCount }} MATCHS</p>
+        <p v-if="team2.matchesCount > 0" class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team1.matchesCount }} MATCHS</p>
         <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
       </div>
   
@@ -61,7 +61,7 @@
           <option value="Wales">Wales</option>
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
-        <p class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team2.matchesCount }} MATCHS</p>
+        <p v-if="team2.matchesCount > 0" class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team2.matchesCount }} MATCHS</p>
         <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p>
       </div>
     </div>
@@ -182,7 +182,7 @@
             score: 0,
             matchesCount: 0
           },
-          isOn: true,
+          isOn: false,
           apiError: false,
           apiResponse: null,  // to store the API response
           // Adding new data properties for the additional parameters
@@ -208,41 +208,82 @@
           this.isOn = !this.isOn;
       },
       async calculateWinRate() {
-  try {
-    // Make the API request with the new parameters
-    const response = await axios.post('http://127.0.0.1:5000/api/calculate_win_rate', {
-      home_team: this.team1.name,
-      away_team: this.team2.name,
-      weather_filter: this.weatherFilter,
-      temperature_filter: this.temperatureFilter,
-      wind_filter: this.windFilter,
-      pressure_filter: this.pressureFilter,
-      df_path: this.dfPath
-    });
+        let apiUrl, postData;
 
-    // Log the API response to the console
-    console.log('API Response:', response.data);
+        if (this.isOn) {
+        // URL of the new Flask API
+        apiUrl = 'http://127.0.0.1:5001/api/predict_winner';  
+        // Data to be sent to the new Flask API
+        postData = {
+            team1: this.team1.name,
+            team2: this.team2.name
+        };
+        } else {
+            // URL of the old API
+            apiUrl = 'http://127.0.0.1:5000/api/calculate_win_rate';  
+            // Data to be sent to the old API
+            postData = {
+                home_team: this.team1.name,
+                away_team: this.team2.name,
+                weather_filter: this.weatherFilter,
+                temperature_filter: this.temperatureFilter,
+                wind_filter: this.windFilter,
+                pressure_filter: this.pressureFilter,
+                df_path: this.dfPath  // Adjust as needed
+            };
+        }
 
-    // Store the API response
-    this.apiResponse = response.data;
+        try {
+          const response = await axios.post(apiUrl, postData);
 
-    // Update the teams' scores with the data from the API response
-    if (response.data.status === 'Success') {
-      const teams = response.data.teams;
-      this.team1.score = teams[this.team1.name].wilwin_score;
-      this.team2.score = teams[this.team2.name].wilwin_score;
+          // Handle the API response based on the API being called
+          if (this.isOn) {
+              // Handle the response from the new Flask API
+              console.log('API Response:', response.data);
+              // Update the UI based on the response structure of the new Flask API
+              // Store the API response
+              this.apiResponse = response.data;
 
-      // Update the "BASÉ SUR X MATCHS" text for each team
-      this.team1.matchesCount = teams[this.team1.name].method2.matches_count;
-      this.team2.matchesCount = teams[this.team2.name].method2.matches_count;
-    }
-  } catch (error) {
-    console.error('Error during the API request:', error);
-    this.apiResponse = 'Error retrieving data';
-    this.team1.score = 'No data';
-    this.team2.score = 'No data';
-  }
-}
+              // Update the teams' scores with the data from the API response
+              if (response.data.winner === this.team1.name) {
+                this.team1.score = "Winner";
+                this.team2.score = "Loser";
+              } else if (response.data.winner === this.team2.name) {
+                  this.team2.score = "Winner";
+                  this.team1.score = "Loser";
+              } else {
+                  this.team1.score = "Draw";
+                  this.team2.score = "Draw";
+              }
+
+              // Reset the matches count
+              this.team1.matchesCount = 0;
+              this.team2.matchesCount = 0;
+              // You need to fill in this part with the actual code to update the UI
+          } else {
+              // Handle the response from the old API
+              console.log('API Response:', response.data);
+              if (response.data.status === 'Success') {
+                  const teams = response.data.teams;
+                  this.team1.score = teams[this.team1.name].wilwin_score;
+                  this.team2.score = teams[this.team2.name].wilwin_score;
+
+                  // Update the "BASÉ SUR X MATCHS" text for each team
+                  this.team1.matchesCount = teams[this.team1.name].method2.matches_count;
+                  this.team2.matchesCount = teams[this.team2.name].method2.matches_count;
+              }
+          }
+        } catch (error) {
+            console.error('Error during the API request:', error);
+            this.apiResponse = 'Error retrieving data';
+            this.team1.score = 'No data';
+            this.team2.score = 'No data';
+            
+            // Reset the matches count
+            this.team1.matchesCount = 0;
+            this.team2.matchesCount = 0;
+        }
+      }
   }
     
   }

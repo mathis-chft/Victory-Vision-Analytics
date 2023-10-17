@@ -13,7 +13,7 @@
       </div>
       
   
-    <div class="flex justify-center items-center font-semibold">
+    <div class="flex justify-center font-semibold h-72">
   
       
       <div class="mr-32 mb-32 text-center">
@@ -246,11 +246,11 @@
 
               // Update the teams' scores with the data from the API response
               if (response.data.winner === this.team1.name) {
-                this.team1.score = "Winner";
-                this.team2.score = "Loser";
+                this.team1.score = "Win";
+                this.team2.score = "Lose";
               } else if (response.data.winner === this.team2.name) {
-                  this.team2.score = "Winner";
-                  this.team1.score = "Loser";
+                  this.team2.score = "Win";
+                  this.team1.score = "Lose";
               } else {
                   this.team1.score = "Draw";
                   this.team2.score = "Draw";
@@ -278,7 +278,7 @@
             this.apiResponse = 'Error retrieving data';
             this.team1.score = 'No data';
             this.team2.score = 'No data';
-            
+
             // Reset the matches count
             this.team1.matchesCount = 0;
             this.team2.matchesCount = 0;

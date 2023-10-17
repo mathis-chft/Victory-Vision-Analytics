@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
 from script_pronoFINAL import combined_win_rate_method
 
 app = Flask(__name__)

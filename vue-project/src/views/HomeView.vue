@@ -32,12 +32,12 @@
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team1.score }}</p>
         <p v-if="team2.matchesCount > 0" class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team1.matchesCount }} MATCHS</p>
-        <!-- <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p> -->
+        <p v-if="areOddsAvailable" class="score mt-0.5 text-sm font-light text-[#ECD71A]" style="font-family: 'SF Mono Light'">CÔTE BETCLIC À {{ team1odds }}</p>
       </div>
   
   
       <div class="flex justify-center items-center">
-        <button @click="calculateWinRate" id=whowilwin_btn class="bg-[#ECD71A] text-[#3B3D33] hover:bg-[#3B3D33] hover:text-[#ECD71A] font-black text-center px-6 py-3 mb-10 rounded-2xl flex flex-col items-center aspect-w-1 aspect-h-1">
+        <button @click="onButtonClick" id=whowilwin_btn class="bg-[#ECD71A] text-[#3B3D33] hover:bg-[#3B3D33] hover:text-[#ECD71A] font-black text-center px-6 py-3 mb-10 rounded-2xl flex flex-col items-center aspect-w-1 aspect-h-1">
           <svg class="mb-1.5" width="45" height="45" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8.14258 13.211C8.14258 26.3477 14.4406 34.5542 27.0047 38.4028C28.9768 40.8204 31.2034 42.7606 33.3664 44.1283V57.9649H28.3725C23.8876 57.9649 21.5656 60.5413 21.5656 64.7718V70.0202C21.5656 71.4514 22.6789 72.4375 24.0148 72.4375H54.4868C55.8228 72.4375 56.9362 71.4514 56.9362 70.0202V64.7718C56.9362 60.5413 54.5824 57.9649 50.0973 57.9649H45.1353V44.1283C47.2983 42.7606 49.5248 40.8204 51.465 38.4028C64.0612 34.5542 70.3592 26.3477 70.3592 13.211C70.3592 9.93473 68.3234 7.93083 64.92 7.93083H58.7491C58.2401 4.68639 55.9501 2.71429 52.1012 2.71429H26.4004C22.5834 2.71429 20.2614 4.65459 19.7525 7.93083H13.5818C10.1783 7.93083 8.14258 9.93473 8.14258 13.211ZM12.6911 13.6563C12.6911 13.1473 13.0728 12.7338 13.6135 12.7338H19.5935V18.9682C19.5935 23.8348 20.8658 28.3516 22.8379 32.2639C16.19 28.8923 12.6911 22.7215 12.6911 13.6563ZM55.632 32.2639C57.6359 28.3516 58.9081 23.8348 58.9081 18.9682V12.7338H64.888C65.4289 12.7338 65.8106 13.1473 65.8106 13.6563C65.8106 22.7215 62.3116 28.8923 55.632 32.2639Z" fill="#3B3D33"/>
           </svg>
@@ -62,7 +62,7 @@
         </select>
         <p class="score text-7xl font-black text-[#EEEEEE]">{{ team2.score }}</p>
         <p v-if="team2.matchesCount > 0" class="score mt-4 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">BASÉ SUR {{ team2.matchesCount }} MATCHS</p>
-        <!-- <p class="score mt-0.5 text-sm font-light text-[#EEEEEE]/[.32]" style="font-family: 'SF Mono Light'">COTES A INTEGRER</p> -->
+        <p v-if="areOddsAvailable" class="score mt-0.5 text-sm font-light text-[#ECD71A]" style="font-family: 'SF Mono Light'">CÔTE BETCLIC À {{ team2odds }}</p>
       </div>
     </div>
   
@@ -190,7 +190,7 @@
           temperatureFilter: 0,
           windFilter: 0,
           pressureFilter: 0,
-          dfPath: 'API-and-scripts/merged_weather_rugby_final.csv'  // Adjust the path as needed
+          dfPath: '../API-and-scripts/merged_weather_rugby_final.csv'  // Adjust the path as needed
         };
     },
     computed: {
@@ -201,18 +201,40 @@
         set(value) {
           this._weatherFilter = value === 'True' || value === true;
         }
+      },
+      areOddsAvailable() {
+        return this.apiResponse && this.apiResponse[this.team1.name] && this.apiResponse['Draw'] && this.apiResponse[this.team2.name];
+      },
+      team1odds() {
+        return this.apiResponse && this.apiResponse[this.team1.name] 
+               ? this.apiResponse[this.team1.name] 
+               : 'Non disponible';
+      },
+      drawodds() {
+          return this.apiResponse && this.apiResponse['Draw'] 
+                ? this.apiResponse['Draw'] 
+                : 'Non disponible';
+      },
+      team2odds() {
+          return this.apiResponse && this.apiResponse[this.team2.name] 
+                ? this.apiResponse[this.team2.name] 
+                : 'Non disponible';
       }
     },
     methods: {
       toggleOnOff() {
           this.isOn = !this.isOn;
       },
+      async onButtonClick() {
+        await this.calculateWinRate();
+        await this.getOdds();
+      },
       async calculateWinRate() {
         let apiUrl, postData;
 
         if (this.isOn) {
         // URL of the new Flask API
-        apiUrl = 'http://127.0.0.1:5001/api/predict_winner';  
+        apiUrl = 'http://127.0.0.1:5000/api/predict_winner';  
         // Data to be sent to the new Flask API
         postData = {
             team1: this.team1.name,
@@ -283,7 +305,19 @@
             this.team1.matchesCount = 0;
             this.team2.matchesCount = 0;
         }
+      },
+      async getOdds() {
+        try {
+            const apiUrl = `http://127.0.0.1:5000/api/get_odds?team1=${this.team1.name}&team2=${this.team2.name}`;
+            const response = await axios.get(apiUrl);
+            console.log('Odds API Response:', response.data);
+            this.apiResponse = response.data;  // Stockez la réponse de l'API si nécessaire
+        } catch (error) {
+            console.error('Error during the odds API request:', error);
+            this.apiError = true;  // Vous pouvez gérer les erreurs d'API de manière appropriée ici
+        }
       }
+
   }
     
   }

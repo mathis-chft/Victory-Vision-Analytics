@@ -1,28 +1,12 @@
 from flask import Flask, request, jsonify
+# Updated Flask API to include both the predicted winner and loser in the response
 from flask_cors import CORS
-import requests
-from bs4 import BeautifulSoup
-from script_pronoFINAL import combined_win_rate_method
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder
 
 app = Flask(__name__)
 CORS(app)
 
-team_names_mapping = {
-    "Argentina": "Argentine",
-    "Australia": "Australie",
-    "England": "Angleterre",
-    "France": "France",
-    "Ireland": "Irlande",
-    "Italy": "Italie",
-    "New Zealand": "Nouvelle-Zélande",
-    "Scotland": "Écosse",
-    "South Africa": "Afrique du Sud",
-    "Wales": "Pays de Galles"
-}
+from script_pronoFINAL import combined_win_rate_method
+
 
 @app.route('/api/calculate_win_rate', methods=['POST'])
 def calculate_win_rate():
@@ -48,52 +32,14 @@ def calculate_win_rate():
 if __name__ == '__main__':
     app.run(debug=True)
 
-@app.route('/api/get_odds', methods=['GET'])
-def get_odds():
-    team1 = request.args.get('team1')
-    team2 = request.args.get('team2')
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
+import pandas as pd
 
-    # Convertir les noms des équipes en français
-    team1_french = team_names_mapping.get(team1, team1)
-    team2_french = team_names_mapping.get(team2, team2)
-
-    # URL de la page à scraper
-    url = 'https://www.betclic.fr/coupe-du-monde-2023-s5/coupe-du-monde-2023-c34'
-    response = requests.get(url)
-    odds_dict = {}  # Dictionnaire pour stocker les cotes
-
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        matches = soup.find_all("a", class_="cardEvent")
-
-        if not matches:
-            return jsonify({"error": "No matches found"}), 404
-
-        found = False
-        for match in matches:
-            teams = match.find_all("div", class_="scoreboard_contestantLabel")
-            if len(teams) >= 2:
-                teamA = teams[0].text.strip()
-                teamB = teams[1].text.strip()
-
-                if (teamA.lower() == team1_french.lower() and teamB.lower() == team2_french.lower()) or (teamA.lower() == team2_french.lower() and teamB.lower() == team1_french.lower()):
-                    found = True
-                    odds = match.find_all("sports-selections-selection", class_="oddButton")
-                    if len(odds) == 3:
-                        odds_teamA = odds[0].find("span", class_="oddValue").text.strip()
-                        draw_odds = odds[1].find("span", class_="oddValue").text.strip()
-                        odds_teamB = odds[2].find("span", class_="oddValue").text.strip()
-
-                        odds_dict[team1] = odds_teamA
-                        odds_dict["Draw"] = draw_odds
-                        odds_dict[team2] = odds_teamB
-                    break
-
-        if not found:
-            return jsonify({"error": f"No match found for {team1} vs {team2}"}), 404
-        return jsonify(odds_dict)
-
-    return jsonify({"error": "Failed to retrieve the webpage"}), 500
+# Initialize Flask app
 
 # Load and prepare the data, and train the model
 df = pd.read_csv('../API-and-scripts/merged_weather_rugby_final.csv', delimiter=';')
@@ -164,5 +110,9 @@ def predict_winner():
 
     return jsonify(response)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# For local testing
+if __name__ == "__main__":
+    app.run(debug=True)  # Changed the port to 5001 to avoid conflicts
+
+# Print out the first part of the code to ensure it's displaying correctly
+print(app.route)

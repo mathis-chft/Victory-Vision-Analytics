@@ -69,6 +69,7 @@ def predict_winner(team1, team2, model, label_encoder):
     
     return prediction
 
+
 if __name__ == "__main__":
     # Ask the user for the team names
     team1 = input("Please enter the name of the first team: ")
@@ -76,4 +77,14 @@ if __name__ == "__main__":
     
     # Make a sample prediction
     predicted_winner = predict_winner(team1, team2, rf_classifier, le)
-    print(f"The predicted winner for the match between {team1} and {team2} is: {predicted_winner}")
+    
+    # Determine the loser based on the predicted winner
+    if predicted_winner == team1:
+        predicted_loser = team2
+    elif predicted_winner == team2:
+        predicted_loser = team1
+    else:  # In case of a draw, there is no loser
+        predicted_loser = "Draw"
+    
+    # Print the result as a dictionary
+    print({"winner": predicted_winner, "loser": predicted_loser})

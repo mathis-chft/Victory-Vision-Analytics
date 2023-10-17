@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score, classification_report
 import pandas as pd
 
 # Load the CSV file into a DataFrame
-df = pd.read_csv('/Users/ihsane/Desktop/Victory Vision Analytics/Vision-Victory-Analytics/API-&-scripts/merged_weather_rugby_final.csv', delimiter=';')
+df = pd.read_csv('/Users/ihsane/Desktop/Victory Vision Analytics/Vision-Victory-Analytics/API-and-scripts/merged_weather_rugby_final.csv', delimiter=';')
 
 # Drop unnecessary columns
 columns_to_drop = ['competition', 'stadium', 'city', 'country', 'neutral', 'world_cup', 'season',

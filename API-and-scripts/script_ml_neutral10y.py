@@ -7,13 +7,16 @@ from sklearn.metrics import accuracy_score, classification_report
 import pandas as pd
 
 # Load the CSV file into a DataFrame
-df = pd.read_csv('/Users/ihsane/Desktop/Victory Vision Analytics/Vision-Victory-Analytics/API-&-scripts/merged_weather_rugby_final.csv', delimiter=';')
+df = pd.read_csv('/Users/ihsane/Desktop/Victory Vision Analytics/Vision-Victory-Analytics/API-and-scripts/merged_weather_rugby_final.csv', delimiter=';')
 
 # Drop unnecessary columns
 columns_to_drop = ['competition', 'stadium', 'city', 'country', 'neutral', 'world_cup', 'season',
                    'avg_temp_c', 'min_temp_c', 'max_temp_c', 'precipitation_mm', 'snow_depth_mm',
                    'avg_wind_dir_deg', 'avg_wind_speed_kmh', 'peak_wind_gust_kmh', 'avg_sea_level_pres_hpa']
 df_clean = df.drop(columns=columns_to_drop)
+
+# Filter the dataset to include only matches from 2013 onwards
+df_clean = df_clean[df_clean['date'] >= '2013-01-01']
 
 # Create a new column to indicate the winner
 df_clean['winner'] = 'draw'
@@ -66,6 +69,7 @@ def predict_winner(team1, team2, model, label_encoder):
     
     return prediction
 
+
 if __name__ == "__main__":
     # Ask the user for the team names
     team1 = input("Please enter the name of the first team: ")
@@ -73,4 +77,14 @@ if __name__ == "__main__":
     
     # Make a sample prediction
     predicted_winner = predict_winner(team1, team2, rf_classifier, le)
-    print(f"The predicted winner for the match between {team1} and {team2} is: {predicted_winner}")
+    
+    # Determine the loser based on the predicted winner
+    if predicted_winner == team1:
+        predicted_loser = team2
+    elif predicted_winner == team2:
+        predicted_loser = team1
+    else:  # In case of a draw, there is no loser
+        predicted_loser = "Draw"
+    
+    # Print the result as a dictionary
+    print({"winner": predicted_winner, "loser": predicted_loser})

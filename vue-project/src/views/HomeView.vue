@@ -190,7 +190,7 @@
           temperatureFilter: 0,
           windFilter: 0,
           pressureFilter: 0,
-          dfPath: '../API-&-scripts/merged_weather_rugby_final.csv'  // Adjust the path as needed
+          dfPath: 'API-and-scripts/merged_weather_rugby_final.csv'  // Adjust the path as needed
         };
     },
     computed: {

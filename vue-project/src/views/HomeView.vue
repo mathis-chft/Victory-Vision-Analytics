@@ -17,7 +17,7 @@
   
       
       <div class="mr-32 mb-32 text-center">
-        <select class="mb-10 text-2xl uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12]" v-model="team1.name">
+        <select class="mb-10 text-2xl uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12]" style="font-family: 'SF Mono Medium'" v-model="team1.name">
           <option value="" disabled selected>Select a team</option>
           <option value="Argentina">Argentina</option>
           <option value="Australia">Australia</option>
@@ -47,7 +47,7 @@
   
   
       <div class="ml-32 mb-32 text-center">
-        <select class="mb-10 text-2xl uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12]" v-model="team2.name">
+        <select class="mb-10 text-2xl uppercase rounded-full text-[#ECD71A] bg-[#ECD71A]/[.12]" style="font-family: 'SF Mono Medium'" v-model="team2.name">
           <option value="" disabled selected>Select a team</option>
           <option value="Argentina">Argentina</option>
           <option value="Australia">Australia</option>

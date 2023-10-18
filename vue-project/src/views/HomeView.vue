@@ -114,6 +114,9 @@
         </div>
       </div>
     </div>
+    <div class="flex justify-center text-[#EEEEEE] text-lg font-bold mt-20">
+      <iframe width="1150" height="1800" src="https://lookerstudio.google.com/embed/reporting/b18bbcca-71e6-4418-99ef-836a39972532/page/7kofD" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
   </template>
   
   <style>

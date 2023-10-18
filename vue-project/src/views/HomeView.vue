@@ -70,45 +70,45 @@
     <div class="flex justify-center text-[#EEEEEE] text-lg font-bold mt-20">
       <div class="text-center mx-16">
         <div class="flex flex-col items-center">
-          <label for="input1">Intempéries</label>
+          <label for="input1">Precipitation</label>
           <input type="checkbox" v-model="weatherFilter" class="cursor-pointer h-10 w-10 bg-[#ECD71A]/[.12] mt-4 rounded-md checked:bg-[#ECD71A]" id="input1"/>
         </div>
       </div>
       <div class="text-center mx-16">
         <div class="flex flex-col items-center">
-          <label for="input2">Température</label>
+          <label for="input2">Temperature</label>
           <select v-model="temperatureFilter" class="w-48 h-10 bg-[#ECD71A]/[.12] rounded-full p-1 mt-4 text-center" id="input2">
-            <option value="0" selected>Désactivé</option>
+            <option value="0" selected>Disabled</option>
             <optgroup label="Options">
-            <option value="Cold">Froid</option>
-            <option value="Medium">Tempéré</option>
-            <option value="Hot">Chaud</option>
+            <option value="Cold">Cold</option>
+            <option value="Medium">Medium</option>
+            <option value="Hot">Hot</option>
             </optgroup>
           </select>
         </div>
       </div>
       <div class="text-center mx-16">
         <div class="flex flex-col items-center">
-          <label for="input3">Vent</label>
+          <label for="input3">Wind</label>
           <select v-model="windFilter" class="w-48 h-10 bg-[#ECD71A]/[.12] rounded-full p-1 mt-4 text-center" id="input3">
-            <option value="0" selected>Désactivé</option>
+            <option value="0" selected>Disabled</option>
             <optgroup label="Options">
-            <option value="Light">Vent faible</option>
-            <option value="Medium">Vent modéré</option>
-            <option value="Strong">Vent fort</option>
+            <option value="Light">Light</option>
+            <option value="Medium">Medium</option>
+            <option value="Strong">Strong</option>
             </optgroup>
           </select>
         </div>
       </div>
       <div class="text-center mx-16">
         <div class="flex flex-col items-center">
-          <label for="input4">Pression</label>
+          <label for="input4">Pressure</label>
           <select v-model="pressureFilter" class="w-48 h-10 bg-[#ECD71A]/[.12] rounded-full p-1 mt-4 text-center" id="input4">
-            <option value="0" selected>Désactivé</option>
+            <option value="0" selected>Disabled</option>
             <optgroup label="Options">
-              <option value="Low">Basse pression</option>
-              <option value="Medium">Pression moyenne</option>
-              <option value="High">Haute pression</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
             </optgroup>
           </select>
         </div>
